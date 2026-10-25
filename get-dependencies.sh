@@ -102,21 +102,6 @@ git clone --recursive https://github.com/Taiko2k/Tauon.git ./Tauon && (
 	python -m installer --destdir=/ dist/*.whl
 
 	site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
-
-	# v13.1.0 compiles the translations into the wheel, at
-	# site-packages/tauon/locale, and the app reads them from its own
-	# package directory. Older releases compiled them into the source tree
-	# and the app read them from /usr/share/locale instead.
-	if [ -d "${site_packages}/tauon/locale" ]; then
-		:
-	else
-		for dir in src/tauon/locale/*; do
-			install -Dm644 \
-				"${dir}/LC_MESSAGES/"*.mo \
-				-t "/usr/share/locale/$(basename "${dir}")/LC_MESSAGES"
-		done
-	fi
-
 	install -Dm644 extra/tauonmb-symbolic.svg -t /usr/share/icons/hicolor/symbolic/apps
 	install -Dm755 src/lrclib-solver/target/release/lrclib-solver "${site_packages}/tauon/lrclib-solver"
 )

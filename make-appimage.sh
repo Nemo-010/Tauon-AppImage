@@ -16,20 +16,9 @@ export DEPLOY_SDL=1
 find /usr/lib/python*/site-packages \
 	-type f -name '*.py' -exec sed -i -e 's|/snap/|/|g' {} \;
 
-# v13.1.0 ships a native `tauon` launcher that handles the playback commands
-# itself, so the wrapper in AppDir/bin is only needed for older releases that
-# installed `tauonmb` instead. A wrapper here would shadow the real binary.
-if [ -f /usr/bin/tauonmb ]; then
-	MAIN_BIN=tauonmb
-elif [ -f /usr/bin/tauon ]; then
-	MAIN_BIN=tauon
-	rm -f ./AppDir/bin/tauon
-fi
-export MAIN_BIN
-
 # Deploy dependencies
 quick-sharun \
-	"/usr/bin/$MAIN_BIN"          \
+	/usr/bin/tauon                \
 	/usr/bin/ffmpeg               \
 	/usr/lib/libgtk-3.so*         \
 	/usr/lib/libssl.so*           \
