@@ -29,7 +29,7 @@ export MAIN_BIN
 
 # Deploy dependencies
 quick-sharun \
-	"/usr/bin/$MAIN_BIN"        \
+	"/usr/bin/$MAIN_BIN"          \
 	/usr/bin/ffmpeg               \
 	/usr/lib/libgtk-3.so*         \
 	/usr/lib/libssl.so*           \
