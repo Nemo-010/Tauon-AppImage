@@ -80,7 +80,12 @@ git clone --recursive https://github.com/Taiko2k/Tauon.git ./Tauon && (
         sed -i 's|com.github.taiko2k.tauonmb.desktop|tauonmb.desktop|' extra/com.github.taiko2k.tauonmb.appdata.xml
     fi
 
-   	python -m build --wheel
+   # Arch Linux ARM's python package was built with distcc enabled, so its
+   # sysconfig records CXX=/usr/lib/distcc/bin/g++, a path that does not
+   # exist in the image and breaks the cmake wheel build. scikit-build-core
+   # only falls back to sysconfig when CC/CXX are unset, so set them here.
+   export CC=gcc CXX=g++
+   python -m build --wheel
 
 	# Tiny Rust binary that calculates LRCLIB challenges
 	(
