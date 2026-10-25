@@ -70,6 +70,8 @@ git clone --recursive https://github.com/Taiko2k/Tauon.git ./Tauon && (
 
 	git fetch --tags origin
 	TAG=$(git tag --sort=-v:refname | grep -vi 'pre\|rc\|alpha\|beta' | head -1)
+	# CI TEST ONLY: pin to v13.0.0, v13.1.0 removed the tauonmb launcher
+	TAG=v13.0.0
 	git checkout "$TAG"
 	git submodule update --init --recursive
 	echo "${TAG#v}" > ~/version
@@ -93,9 +95,7 @@ git clone --recursive https://github.com/Taiko2k/Tauon.git ./Tauon && (
 
 	python -m installer --destdir=/ dist/*.whl
 
-	site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
-	for dir in "${site_packages}"/tauon/locale/*; do
-		[ -d "${dir}/LC_MESSAGES" ] || continue
+	for dir in src/tauon/locale/*; do
 		install -Dm644 \
 			"${dir}/LC_MESSAGES/"*.mo \
 			-t "/usr/share/locale/$(basename "${dir}")/LC_MESSAGES"
