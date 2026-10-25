@@ -93,7 +93,9 @@ git clone --recursive https://github.com/Taiko2k/Tauon.git ./Tauon && (
 
 	python -m installer --destdir=/ dist/*.whl
 
-	for dir in src/tauon/locale/*; do
+	site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+	for dir in "${site_packages}"/tauon/locale/*; do
+		[ -d "${dir}/LC_MESSAGES" ] || continue
 		install -Dm644 \
 			"${dir}/LC_MESSAGES/"*.mo \
 			-t "/usr/share/locale/$(basename "${dir}")/LC_MESSAGES"
